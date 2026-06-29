@@ -697,6 +697,10 @@ function returnToMenu() {
     document.getElementById('hud').classList.add('hidden');
 }
 
+function goToOnline() {
+    window.location.href = 'online.html';
+}
+
 function render() {
     ctx.save();
     
@@ -739,6 +743,10 @@ document.addEventListener('keydown', (e) => {
         }
     }
     
+    if (e.code === 'KeyO' && game.phase === GamePhase.MENU) {
+        goToOnline();
+    }
+    
     if (e.code === 'Escape' && game.phase === GamePhase.GAMEOVER) {
         returnToMenu();
     }
@@ -750,6 +758,14 @@ document.addEventListener('keydown', (e) => {
 
 document.addEventListener('keyup', (e) => {
     keys[e.code] = false;
+});
+
+document.getElementById('localMode').addEventListener('click', () => {
+    startGame();
+});
+
+document.getElementById('onlineMode').addEventListener('click', () => {
+    goToOnline();
 });
 
 initGame();
