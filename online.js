@@ -792,7 +792,17 @@ function connectToServer(address) {
     updateServerStatus('connecting');
     
     try {
-        ws = new WebSocket(`ws://${address}/ws`);
+        let wsUrl;
+        if (address.startsWith('ws://') || address.startsWith('wss://')) {
+            wsUrl = address + '/ws';
+        } else if (location.protocol === 'https:') {
+            wsUrl = `wss://${address}/ws`;
+        } else {
+            wsUrl = `ws://${address}/ws`;
+        }
+        
+        console.log('连接到:', wsUrl);
+        ws = new WebSocket(wsUrl);
         
         let connectTimeout = setTimeout(() => {
             if (ws.readyState !== WebSocket.OPEN) {
@@ -1175,6 +1185,15 @@ document.addEventListener('keyup', (e) => {
 initGame();
 gameLoop();
 
-// 自动连接本地服务器
-document.getElementById('serverAddressInput').value = 'localhost:8765';
-connectToServer('localhost:8765');
+// 服务器地址配置
+// - 本地开发: localhost:8765
+// - Cloudflare Pages/Workers: 当前域名 (自动识别)
+// - 其他服务器: 手动输入
+let defaultServer;
+if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+    defaultServer = location.host;
+} else {
+    defaultServer = 'localhost:8765';
+}
+
+document.getElementById('serverAddressInput').value = defaultServer;
