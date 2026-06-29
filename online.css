@@ -116,6 +116,17 @@
     color: #1a1a2e;
 }
 
+.status-indicator.connecting {
+    background: #ffd93d;
+    color: #1a1a2e;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
 .status-indicator.disconnected {
     background: #ff4757;
     color: #fff;

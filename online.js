@@ -789,16 +789,27 @@ function connectToServer(address) {
         ws.close();
     }
     
+    updateServerStatus('connecting');
+    
     try {
         ws = new WebSocket(`ws://${address}/ws`);
         
+        let connectTimeout = setTimeout(() => {
+            if (ws.readyState !== WebSocket.OPEN) {
+                ws.close();
+                showConnectionError(address, 'timeout');
+            }
+        }, 5000);
+        
         ws.onopen = () => {
-            updateServerStatus(true);
+            clearTimeout(connectTimeout);
+            updateServerStatus('connected');
             console.log('已连接到服务器');
         };
         
         ws.onclose = () => {
-            updateServerStatus(false);
+            clearTimeout(connectTimeout);
+            updateServerStatus('disconnected');
             console.log('服务器连接断开');
             if (syncInterval) {
                 clearInterval(syncInterval);
@@ -806,9 +817,9 @@ function connectToServer(address) {
         };
         
         ws.onerror = (error) => {
-            updateServerStatus(false);
+            clearTimeout(connectTimeout);
+            updateServerStatus('disconnected');
             console.error('WebSocket 错误:', error);
-            alert('无法连接到服务器，请检查服务器地址是否正确');
         };
         
         ws.onmessage = (event) => {
@@ -816,20 +827,65 @@ function connectToServer(address) {
             handleServerMessage(data);
         };
     } catch (e) {
-        updateServerStatus(false);
-        alert('连接失败: ' + e.message);
+        updateServerStatus('disconnected');
+        showConnectionError(address, 'error', e.message);
     }
 }
 
-function updateServerStatus(connected) {
+function showConnectionError(address, type, detail) {
+    let msg = '无法连接到服务器\n\n';
+    msg += '服务器地址: ' + address + '\n\n';
+    
+    if (type === 'timeout') {
+        msg += '连接超时！可能原因：\n\n';
+    } else {
+        msg += '连接失败！可能原因：\n\n';
+    }
+    
+    const isLocal = address.includes('localhost') || address.includes('127.0.0.1');
+    const isLan = address.startsWith('192.168.') || address.startsWith('10.') || address.startsWith('172.');
+    
+    if (isLocal) {
+        msg += '📍 本地连接问题：\n';
+        msg += '1. 服务器是否启动？\n';
+        msg += '2. 端口8765是否被占用？\n';
+        msg += '3. 运行 启动服务器.bat\n\n';
+    } else if (isLan) {
+        msg += '📍 局域网连接问题：\n';
+        msg += '1. 两台电脑是否在同一WiFi？\n';
+        msg += '2. 主机IP地址是否正确？\n';
+        msg += '3. 主机防火墙是否放行8765端口？\n';
+        msg += '4. 主机是否运行了 启动服务器.bat？\n\n';
+    } else {
+        msg += '📍 互联网连接问题：\n';
+        msg += '1. 服务器是否部署在云服务器上？\n';
+        msg += '2. 云服务器安全组是否开放8765端口？\n';
+        msg += '3. 服务器防火墙是否配置？\n';
+        msg += '4. 服务器IP地址是否正确？\n\n';
+        msg += '💡 提示：家里电脑直接开服，外地朋友是连不上的！\n';
+        msg += '需要云服务器或内网穿透工具。\n';
+    }
+    
+    if (detail) {
+        msg += '\n错误详情: ' + detail;
+    }
+    
+    alert(msg);
+}
+
+function updateServerStatus(status) {
     const statusEl = document.getElementById('serverStatus');
-    if (connected) {
+    if (status === 'connected') {
         statusEl.textContent = '服务器: 已连接';
-        statusEl.classList.remove('disconnected');
+        statusEl.classList.remove('disconnected', 'connecting');
         statusEl.classList.add('connected');
+    } else if (status === 'connecting') {
+        statusEl.textContent = '服务器: 连接中...';
+        statusEl.classList.remove('connected', 'disconnected');
+        statusEl.classList.add('connecting');
     } else {
         statusEl.textContent = '服务器: 未连接';
-        statusEl.classList.remove('connected');
+        statusEl.classList.remove('connected', 'connecting');
         statusEl.classList.add('disconnected');
     }
 }
