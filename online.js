@@ -1065,6 +1065,20 @@ document.getElementById('backToMenuBtn').addEventListener('click', () => {
     returnToMenu();
 });
 
+document.getElementById('showHelpBtn').addEventListener('click', () => {
+    document.getElementById('helpModal').classList.remove('hidden');
+});
+
+document.getElementById('closeHelpBtn').addEventListener('click', () => {
+    document.getElementById('helpModal').classList.add('hidden');
+});
+
+document.getElementById('helpModal').addEventListener('click', (e) => {
+    if (e.target.id === 'helpModal') {
+        document.getElementById('helpModal').classList.add('hidden');
+    }
+});
+
 // 键盘事件
 document.addEventListener('keydown', (e) => {
     keys[e.code] = true;

@@ -299,6 +299,96 @@
     color: #888;
 }
 
+/* 连接帮助 */
+.connection-help {
+    border: 2px dashed #555;
+    padding: 15px;
+    margin: 15px 0;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.help-title {
+    font-size: 10px;
+    color: #ffd93d;
+    margin-bottom: 10px;
+}
+
+.help-content {
+    margin-bottom: 10px;
+}
+
+.help-line {
+    font-size: 8px;
+    color: #aaa;
+    margin-bottom: 6px;
+    line-height: 1.5;
+}
+
+.pixel-btn.tiny {
+    font-size: 8px;
+    padding: 5px 10px;
+}
+
+/* 帮助弹窗 */
+.help-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.help-modal-content {
+    background: #1a1a2e;
+    border: 3px solid #00d4ff;
+    padding: 30px;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+}
+
+.help-modal-content h3 {
+    font-size: 14px;
+    color: #ffd93d;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.help-section {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #333;
+}
+
+.help-section:last-child {
+    border-bottom: none;
+    margin-bottom: 10px;
+}
+
+.help-section h4 {
+    font-size: 11px;
+    color: #00d4ff;
+    margin-bottom: 10px;
+}
+
+.help-section p {
+    font-size: 9px;
+    color: #ccc;
+    line-height: 1.8;
+    margin-bottom: 5px;
+}
+
+.help-modal-content .pixel-btn {
+    display: block;
+    margin: 20px auto 0;
+}
+
 /* 响应式 */
 @media (max-width: 800px) {
     .online-options {

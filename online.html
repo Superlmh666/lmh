@@ -51,8 +51,40 @@
                     <div class="server-status">
                         <span id="serverStatus" class="status-indicator disconnected">服务器: 未连接</span>
                         <input type="text" id="serverAddressInput" class="pixel-input small" 
-                               placeholder="服务器地址" value="">
+                               placeholder="服务器地址" value="localhost:8765">
                         <button class="pixel-btn small" id="connectServerBtn">连接</button>
+                    </div>
+                    
+                    <div class="connection-help">
+                        <div class="help-title pixel-text">📌 连接说明</div>
+                        <div class="help-content">
+                            <p class="pixel-text help-line">同一局域网: 输入对方内网IP</p>
+                            <p class="pixel-text help-line">不同网络: 需要公网IP或云服务器</p>
+                        </div>
+                        <button class="pixel-btn tiny" id="showHelpBtn">查看详细教程</button>
+                    </div>
+                    
+                    <div id="helpModal" class="help-modal hidden">
+                        <div class="help-modal-content">
+                            <h3 class="pixel-text">联网对战教程</h3>
+                            <div class="help-section">
+                                <h4 class="pixel-text">方式一: 局域网对战 (推荐)</h4>
+                                <p class="pixel-text">1. 两台电脑连同一个WiFi/路由器</p>
+                                <p class="pixel-text">2. 主机运行 server.py</p>
+                                <p class="pixel-text">3. 另一台输入主机的内网IP连接</p>
+                            </div>
+                            <div class="help-section">
+                                <h4 class="pixel-text">方式二: 云服务器 (互联网对战)</h4>
+                                <p class="pixel-text">1. 在云服务器部署 server.py</p>
+                                <p class="pixel-text">2. 开放服务器8765端口防火墙</p>
+                                <p class="pixel-text">3. 双方都连接云服务器IP</p>
+                            </div>
+                            <div class="help-section">
+                                <h4 class="pixel-text">方式三: 内网穿透</h4>
+                                <p class="pixel-text">使用花生壳/ngrok等工具映射端口</p>
+                            </div>
+                            <button class="pixel-btn" id="closeHelpBtn">关闭</button>
+                        </div>
                     </div>
                     
                     <a href="index.html" class="back-link pixel-text">← 返回本地对战</a>
